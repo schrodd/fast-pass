@@ -4,7 +4,7 @@ import Image from "next/image"
 
 async function getUser(data: any){
   const {username: user, password} = data
-  await fetch('http://localhost:3000/login', {
+  await fetch('https://food-order-app-production-84a2.up.railway.app/login', {
     method: 'POST',
     body: JSON.stringify({
       user,
@@ -13,6 +13,9 @@ async function getUser(data: any){
   })
   .then((res) => {
     console.log(res)
+  })
+  .catch((err) => {
+    console.log(err)
   })
 }
 
