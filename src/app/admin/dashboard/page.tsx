@@ -9,7 +9,7 @@ export default function Page(){
   const {push} = useRouter()
   const [auth, setAuth] = useState('')
   const [tables, setTables] = useState([])
-  useEffect(() => {
+  function getTables(){
     const jwt = localStorage.getItem('auth')
     if (jwt) {
       setAuth(jwt)
@@ -30,7 +30,34 @@ export default function Page(){
     } else {
       push('/admin/login')
     }
-  }, [auth])
+  }
+  function createTable(){
+    const jwt = localStorage.getItem('auth')
+    if (jwt) {
+      // setAuth(jwt)
+      fetchHelper('POST', '/tables', undefined, jwt)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('HTTP error: ' + res.status)
+        }
+        return res.json()
+      })
+      .then(() => {
+        getTables()
+      })
+      .catch(() => {
+        localStorage.removeItem('auth')
+        push('/admin/login')
+      })
+    } else {
+      push('/admin/login')
+    }
+  }
+
+  useEffect(() => {
+    getTables()
+  }, [auth, push])
+  
   return (
     <>
       <div className="w-full mb-5 text-white">
@@ -38,7 +65,7 @@ export default function Page(){
       </div>
       <div className="w-full flex flex-row gap-3 flex-wrap justify-start items-center">
         {tables && tables.map((e: any, i: number) => <TableCard data={e} key={i}/>)}
-        <div className='bg-slate-100 text-slate-900 p-3 rounded-2xl shadow flex justify-center items-center'><AddIcon/></div>
+        <button onClick={createTable} className='bg-slate-100 text-slate-900 p-3 rounded-2xl shadow flex justify-center items-center'><AddIcon/></button>
       </div>
     </>
   )
