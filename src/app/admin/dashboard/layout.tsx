@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { useRouter } from "next/navigation";
 import { whiteButtonStyle } from "@/app/styles/common";
 
-export default function dashboardLayout({children}: {children: React.ReactNode}){
+export default function DashboardLayout({children}: {children: React.ReactNode}){
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const {push} = useRouter()
   function deleteAuth(){
