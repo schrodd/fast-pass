@@ -1,3 +1,4 @@
+"use client"
 import { useState, useEffect } from 'react'
 import { fetchHelper } from '../../../helpers/fetch'
 import { useRouter } from 'next/navigation';
