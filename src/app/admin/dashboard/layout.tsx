@@ -16,8 +16,9 @@ export default function dashboardLayout({children}: {children: React.ReactNode})
   return (
     <main className="bg-gradient-to-tr from-red-500 to-rose-500 min-h-screen flex flex-col px-5 pb-5">
       {isMenuOpen && (
-        <div className={`w-full h-full filter backdrop-blur-md bg-black/50 fixed top-0 left-0 z-10 flex flex-col items-end p-5 gap-5`}>
+        <div className={`w-full h-full filter backdrop-blur-md bg-black/50 fixed top-0 left-0 z-10 flex flex-col items-end p-5 gap-3`}>
           <button onClick={() => setIsMenuOpen(e => !e)} className="transition hover:scale-125 animate-pulse"><CloseIcon fontSize="large" sx={{color: 'white'}}/></button>
+          <button className={whiteButtonStyle}>Editar menú</button>
           <button className={whiteButtonStyle}>Datos del comercio</button>
           <button onClick={deleteAuth} className={whiteButtonStyle}>Cerrar sesión</button>
         </div>

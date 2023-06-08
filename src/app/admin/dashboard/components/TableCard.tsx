@@ -11,7 +11,7 @@ export default function TableCard({data}: any){
     <div className={`container w-[48%] md:w-[19%] h-32 bg-slate-100 px-6 py-3 text-slate-800 rounded-2xl
     shadow flex flex-col justify-center items-center relative overflow-hidden`}>
       {isMenuOpen && (
-        <div className='w-full h-full absolute bg-slate-100/40 backdrop-blur-sm flex flex-col items-center p-3 gap-1 z-10'>
+        <div className='w-full h-full absolute bg-slate-100/60 backdrop-blur-sm flex flex-col items-center p-3 gap-1 z-10'>
           <button onClick={() => setIsMenuOpen(e => !e)} className='transition hover:scale-125'><CloseIcon/></button>
           <button className='text-xs hover:underline'>Editar</button>
           <button className='text-xs hover:underline'>Cambiar código</button>
