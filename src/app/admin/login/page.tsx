@@ -3,9 +3,13 @@ import Image from "next/image"
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react'
 import { fetchHelper } from '@/app/helpers/fetch'
+import { standardButtonStyle } from "@/app/styles/common";
+import { inputStyle } from "@/app/styles/common";
 
 export default function Page(){
+  
   const { push } = useRouter()
+
   async function getUser(data: any){
     const {username, password} = data
     await fetchHelper('POST', '/login', {username, password})
@@ -19,13 +23,14 @@ export default function Page(){
       console.log(err)
     })
   }
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>){
     event.preventDefault()
     const data = Object.fromEntries(new FormData(event.currentTarget) as Iterable<[PropertyKey, string]>)
     await getUser(data)
     push('/admin/dashboard')
   }
-  const inputTw = 'border border-slate-200 bg-slate-100 py-2 px-5 rounded-full'
+
   useEffect(() => {
     const token = localStorage.getItem("auth")
     if (token) push('/admin/dashboard')
@@ -35,13 +40,10 @@ export default function Page(){
       <div className="bg-white m-5 p-5 w-full rounded-3xl shadow flex flex-col justify-center items-center gap-y-5">
         <Image src='/fplogo.svg' alt='Fast Pass' width={120} height={60} className="opacity-80 mr-3"/>
         <form action="" className="flex flex-col place-items-center gap-y-3" onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
-          <input type="text" name="username" placeholder="Usuario" className={inputTw}/>
-          <input type="password" name="password" placeholder="Contraseña" className={inputTw}/>
-          <button id="admin-login" type="submit" className="bg-gradient-to-tr from-red-500 to-rose-500 border text-slate-100 py-2 px-6 rounded-full font-medium">Iniciar sesión</button>
+          <input type="text" name="username" placeholder="Usuario" className={inputStyle}/>
+          <input type="password" name="password" placeholder="Contraseña" className={inputStyle}/>
+          <button id="admin-login" type="submit" className={standardButtonStyle}>Iniciar sesión</button>
         </form>
-        <div className="w-1/2">
-          <p id='token' className="break-all text-xs"></p>
-        </div>
       </div>
     </main>
   )

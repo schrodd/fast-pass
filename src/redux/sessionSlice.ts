@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
-  authKey: "",
+  authKey: "asdasd",
 };
 
 export const sessionSlice = createSlice({

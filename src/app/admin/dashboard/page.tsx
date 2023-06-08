@@ -1,29 +1,45 @@
 "use client"
-import Image from "next/image"
-import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react'
+import { fetchHelper } from '../../helpers/fetch'
+import TableCard from "./components/TableCard";
+import AddIcon from '@mui/icons-material/Add';
 
 export default function Page(){
   const {push} = useRouter()
   const [auth, setAuth] = useState('')
+  const [tables, setTables] = useState([])
   useEffect(() => {
     const jwt = localStorage.getItem('auth')
     if (jwt) {
       setAuth(jwt)
+      fetchHelper('GET', '/tables', undefined, jwt)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('HTTP error: ' + res.status)
+        }
+        return res.json()
+      })
+      .then((data) => {
+        setTables(data)
+      })
+      .catch(() => {
+        localStorage.removeItem('auth')
+        push('/admin/login')
+      })
     } else {
-      push('/admin')
+      push('/admin/login')
     }
   }, [auth])
-  function deleteAuth(){
-    localStorage.removeItem('auth')
-    push('/admin')
-  }
   return (
-    <main className="bg-gradient-to-tr from-red-500 to-rose-500 min-h-screen flex place-content-center">
-      <div className="bg-white m-5 p-5 w-full rounded-3xl shadow flex flex-col justify-center items-center gap-y-5">
-        <Image src='/fplogo.svg' alt='Fast Pass' width={120} height={60} className="opacity-80 mr-3"/>
-        <button onClick={deleteAuth}className="bg-gradient-to-tr from-red-500 to-rose-500 border text-slate-100 py-2 px-6 rounded-full font-medium">Logout</button>
+    <>
+      <div className="w-full mb-5 text-white">
+        <p><b>Mesas activas:</b> {tables.length}</p>
       </div>
-    </main>
+      <div className="w-full flex flex-row gap-3 flex-wrap justify-start items-center">
+        {tables && tables.map((e: any, i: number) => <TableCard data={e} key={i}/>)}
+        <div className='bg-slate-100 text-slate-900 p-3 rounded-2xl shadow flex justify-center items-center'><AddIcon/></div>
+      </div>
+    </>
   )
 }
