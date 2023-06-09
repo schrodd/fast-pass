@@ -19,7 +19,7 @@ export default function DashboardLayout({children}: {children: React.ReactNode})
         <div className={`w-full h-full filter backdrop-blur-md bg-black/50 fixed top-0 left-0 z-10 flex flex-col items-end p-5 gap-3`}>
           <button onClick={() => setIsMenuOpen(e => !e)} className="transition hover:scale-125 animate-pulse"><CloseIcon fontSize="large" sx={{color: 'white'}}/></button>
           <button className={whiteButtonStyle}>Editar menú</button>
-          <button className={whiteButtonStyle}>Datos del comercio</button>
+          <button onClick={() => push('/admin/profile')} className={whiteButtonStyle}>Datos del comercio</button>
           <button onClick={deleteAuth} className={whiteButtonStyle}>Cerrar sesión</button>
         </div>
       )}
