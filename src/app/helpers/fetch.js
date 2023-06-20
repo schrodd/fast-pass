@@ -1,4 +1,4 @@
-export async function fetchHelper(method, route, body, authKey) {
+export async function fetchHelper(method, route, authKey, body) {
   const config = {
     headers: new Headers({
       "content-type": "application/json",
@@ -6,6 +6,6 @@ export async function fetchHelper(method, route, body, authKey) {
     }),
     method,
   };
-  if (body) config.body = JSON.stringify(body);
+  if (body !== undefined) config.body = JSON.stringify(body);
   return await fetch("http://localhost:3000" + route, config);
 }

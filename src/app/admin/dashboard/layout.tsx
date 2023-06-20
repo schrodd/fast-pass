@@ -4,7 +4,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react'
 import { useRouter } from "next/navigation";
-import { whiteButtonStyle } from "@/app/styles/common";
 
 export default function DashboardLayout({children}: {children: React.ReactNode}){
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -13,14 +12,19 @@ export default function DashboardLayout({children}: {children: React.ReactNode})
     localStorage.removeItem('auth')
     push('/admin/login')
   }
+  function handleRoute(route: string){
+    push(route)
+    setIsMenuOpen(e => !e)
+  }
   return (
     <main className="bg-gradient-to-tr from-red-500 to-rose-500 min-h-screen flex flex-col px-5 pb-5">
       {isMenuOpen && (
         <div className={`w-full h-full filter backdrop-blur-md bg-black/50 fixed top-0 left-0 z-10 flex flex-col items-end p-5 gap-3`}>
           <button onClick={() => setIsMenuOpen(e => !e)} className="transition hover:scale-125 animate-pulse"><CloseIcon fontSize="large" sx={{color: 'white'}}/></button>
-          <button className={whiteButtonStyle}>Editar menú</button>
-          <button onClick={() => push('/admin/profile')} className={whiteButtonStyle}>Datos del comercio</button>
-          <button onClick={deleteAuth} className={whiteButtonStyle}>Cerrar sesión</button>
+          <button onClick={() => handleRoute('/admin/dashboard')} className="button-white">Ver mesas</button>
+          <button className="button-white">Editar menú</button>
+          <button onClick={() => handleRoute('/admin/dashboard/profile')} className="button-white">Datos del comercio</button>
+          <button onClick={deleteAuth} className="button-white">Cerrar sesión</button>
         </div>
       )}
       <header className="flex justify-between items-center h-20 drop-shadow">
