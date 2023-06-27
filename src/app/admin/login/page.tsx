@@ -5,7 +5,6 @@ import { useEffect } from 'react'
 import { fetchHelper } from '@/app/helpers/fetch'
 
 export default function Page(){
-  
   const { push } = useRouter()
 
   async function getUser(data: any){
@@ -33,6 +32,7 @@ export default function Page(){
     const token = localStorage.getItem("auth")
     if (token) push('/admin/dashboard')
   })
+
   return (
     <main className="bg-gradient-to-tr from-red-500 to-rose-500 h-screen flex place-content-center">
       <div className="bg-white m-5 p-5 w-full rounded-3xl shadow flex flex-col justify-center items-center gap-y-5">

@@ -35,23 +35,26 @@ export function useCommerces() {
       push("/admin/login");
     }
   }
-  function updateCommerce(data: any, id: string | undefined) {
+  function updateCommerce(
+    data: any,
+    id: string | undefined
+  ): Promise<boolean> | boolean {
     const jwt = localStorage.getItem("auth");
     if (!jwt) {
       push("/admin/login");
-      return;
+      return false;
     }
-    fetchHelper("PUT", `/commerces/${id}`, jwt, data)
+    return fetchHelper("PUT", `/commerces/${id}`, jwt, data)
       .then((res) => {
         if (!res.ok) throw new Error("HTTP Error: " + res.status);
         return res.json();
       })
       .then((data) => {
-        console.log(data);
+        return true;
       })
-      .catch(() => {
-        localStorage.removeItem("auth");
-        push("/admin/login");
+      .catch((err) => {
+        console.log("Error updating commerce data", err);
+        return false;
       });
   }
 

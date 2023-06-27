@@ -1,3 +1,5 @@
+// Every fetch must go authenticated, so to avoid repeating code every time (specifically, authorization headers) i made this.
+
 export async function fetchHelper(method, route, authKey, body) {
   const config = {
     headers: new Headers({

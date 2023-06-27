@@ -5,7 +5,8 @@ import InputWithLabel from './InputWithLabel'
 
 export default function Page(){
   const { commerce, updateCommerce } = useCommerces()
-  function handleUpdateProfileData(e: FormEvent){
+
+  async function handleUpdateProfileData(e: FormEvent){
     e.preventDefault()
     if (e.target !== null) {
       const formData: any = new FormData(e.target as HTMLFormElement)
@@ -13,11 +14,18 @@ export default function Page(){
       for (let item of formData.entries()) {
         data[item[0]] = item[1]
       }
-      console.log(data)
-      updateCommerce(data, commerce._id)
+      const status = await updateCommerce(data, commerce._id)
       //trigger alert
+      const msgTag = document.getElementById('notification')
+      if (msgTag) {
+        msgTag.innerHTML = status ? 'Datos guardados con éxito' : 'Error al actualizar datos, por favor revise los campos'
+        setTimeout(() => {
+          msgTag.innerHTML = ''
+        }, 3000)
+      }
     }
   }
+
   const inputFields = [
     {
       name: "name",
@@ -50,12 +58,14 @@ export default function Page(){
       value: commerce.address
     }
   ]
+  
   return (
     <div className="bg-white m-5 p-5 rounded-3xl shadow flex flex-col justify-center items-center gap-y-5 self-center md:items-start md:px-8">
       <h1 className="text-xl font-bold text-slate-700">Datos del comercio</h1>
       <form action="" className="flex flex-col flex-wrap md:flex-row gap-3" onSubmit={(e: FormEvent) => handleUpdateProfileData(e)}>
         {Object.keys(commerce).length > 0 && inputFields.map((e,i) => <InputWithLabel {...e} key={i}/>)}
         <button id="commerce-update" type="submit" className='button-main mt-5 place-self-center md:mt-2'>Actualizar información</button>
+        <p id='notification' className='w-full text-xs text-slate-400 font-semibold'></p>
       </form>
     </div>
   )
