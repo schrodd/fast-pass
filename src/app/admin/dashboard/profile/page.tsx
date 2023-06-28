@@ -61,10 +61,9 @@ export default function Page(){
   
   return (
     <div className="bg-white m-5 p-5 rounded-3xl shadow flex flex-col justify-center items-center gap-y-5 self-center md:items-start md:px-8">
-      <h1 className="text-xl font-bold text-slate-700">Datos del comercio</h1>
-      <form action="" className="flex flex-col flex-wrap md:flex-row gap-3" onSubmit={(e: FormEvent) => handleUpdateProfileData(e)}>
+      <form action="" className="flex flex-col flex-wrap gap-2" onSubmit={(e: FormEvent) => handleUpdateProfileData(e)}>
         {Object.keys(commerce).length > 0 && inputFields.map((e,i) => <InputWithLabel {...e} key={i}/>)}
-        <button id="commerce-update" type="submit" className='button-main mt-5 place-self-center md:mt-2'>Actualizar información</button>
+        <button id="commerce-update" type="submit" className='button-alt mt-5 place-self-center md:mt-2'>Actualizar información</button>
         <p id='notification' className='w-full text-xs text-slate-400 font-semibold'></p>
       </form>
     </div>

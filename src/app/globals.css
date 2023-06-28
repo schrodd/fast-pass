@@ -2,12 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+body::-webkit-scrollbar {
+  @apply bg-slate-600 w-4
+}
+body::-webkit-scrollbar-thumb {
+  @apply bg-slate-100 rounded-full
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-300
+}
+
 .button-main {
   @apply bg-gradient-to-tr from-red-500 to-rose-500 text-slate-100 py-2 px-6 rounded-full font-medium shadow-xl transition hover:scale-110;
 }
 
 .button-alt {
-  @apply bg-gradient-to-tr from-slate-900 to-slate-800 text-slate-100 py-2 px-6 rounded-full font-medium shadow-xl transition hover:scale-110
+  @apply bg-gradient-to-tr from-slate-700 to-slate-500 text-slate-100 py-2 px-6 rounded-full font-medium shadow-xl transition hover:scale-110
 }
 
 .button-white {
