@@ -1,6 +1,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { fetchHelper } from "../helpers/fetch";
+import { NewProduct } from "../interfaces/Products.interface";
 
 export function useProducts() {
   const { push } = useRouter();
@@ -27,11 +28,10 @@ export function useProducts() {
     }
   }
 
-  function createProduct() {
+  function createProduct(body: NewProduct) {
     const jwt = localStorage.getItem("auth");
     if (jwt) {
-      // Revisar inclusion del body necesario para postear/crear producto nuevo
-      fetchHelper("POST", "/tables", jwt)
+      return fetchHelper("POST", "/products", jwt, body)
         .then((res) => {
           if (!res.ok) {
             throw new Error("HTTP error: " + res.status);
@@ -40,13 +40,15 @@ export function useProducts() {
         })
         .then(() => {
           getProducts();
+          return true;
         })
-        .catch(() => {
-          localStorage.removeItem("auth");
-          push("/admin/login");
+        .catch((err) => {
+          console.log(err);
+          return false;
         });
     } else {
       push("/admin/login");
+      return false;
     }
   }
 

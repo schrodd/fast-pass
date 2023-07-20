@@ -2,6 +2,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { fetchHelper } from "../helpers/fetch";
 import { Table } from "../interfaces/Tables.interface";
+import { toast } from "react-toastify";
 
 export function useTables() {
   const { push } = useRouter();
@@ -43,6 +44,7 @@ export function useTables() {
         })
         .then(() => {
           getTables();
+          toast.success("Se ha creado una mesa nueva");
         })
         .catch(() => {
           localStorage.removeItem("auth");
@@ -65,6 +67,7 @@ export function useTables() {
         })
         .then(() => {
           getTables();
+          toast.success(`Se ha eliminado la mesa ${tableNumber}`);
         })
         .catch(() => {
           localStorage.removeItem("auth");
@@ -87,6 +90,7 @@ export function useTables() {
         })
         .then(() => {
           getTables();
+          toast.success(`Se ha actualizado el código de seguridad de la mesa ${tableNumber}`)
         })
         .catch(() => {
           localStorage.removeItem("auth");

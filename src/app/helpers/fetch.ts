@@ -1,7 +1,18 @@
 // Every fetch must go authenticated, so to avoid repeating code every time (specifically, authorization headers) i made this.
 
-export async function fetchHelper(method, route, authKey, body) {
-  const config = {
+interface FetchConfig {
+  headers: Headers;
+  method: string;
+  body?: string;
+}
+
+export async function fetchHelper(
+  method: string,
+  route: string,
+  authKey: string,
+  body?: unknown
+) {
+  const config: FetchConfig = {
     headers: new Headers({
       "content-type": "application/json",
       Authorization: `Bearer ${authKey}`,

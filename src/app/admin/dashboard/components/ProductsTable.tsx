@@ -21,9 +21,11 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
+import formatPrice from '@/app/helpers/formatNumber';
 
 interface Product {
   name: string;
+  sku: string;
   price: number;
   stock: number;
   hidden: string;
@@ -53,10 +55,6 @@ function getComparator<Key extends keyof any>(
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-// Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
-// stableSort() brings sort stability to non-modern browsers (notably IE11). If you
-// only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
-// with exampleArray.slice().sort(exampleComparator)
 function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
@@ -82,6 +80,12 @@ const headCells: readonly HeadCell[] = [
     numeric: false,
     disablePadding: true,
     label: 'Nombre',
+  },
+  {
+    id: 'sku',
+    numeric: true,
+    disablePadding: false,
+    label: 'SKU',
   },
   {
     id: 'price',
@@ -164,10 +168,11 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
+  selected: readonly string[];
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected } = props;
+  const { numSelected, selected } = props;
 
   return (
     <Toolbar
@@ -197,8 +202,8 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       )}
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
+          <IconButton onClick={() => console.log(selected)}>
+            <DeleteIcon/>
             {/* Include delete popup and action */}
           </IconButton>
         </Tooltip>
@@ -220,7 +225,7 @@ export default function EnhancedTable({products}: {products: Product[]}) {
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -233,7 +238,7 @@ export default function EnhancedTable({products}: {products: Product[]}) {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = products.map((n) => n.name);
+      const newSelected = products.map((n) => n.sku);
       setSelected(newSelected);
       return;
     }
@@ -256,7 +261,7 @@ export default function EnhancedTable({products}: {products: Product[]}) {
         selected.slice(selectedIndex + 1),
       );
     }
-
+    console.log(newSelected)
     setSelected(newSelected);
   };
 
@@ -269,11 +274,7 @@ export default function EnhancedTable({products}: {products: Product[]}) {
     setPage(0);
   };
 
-  const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDense(event.target.checked);
-  };
-
-  const isSelected = (name: string) => selected.indexOf(name) !== -1;
+  const isSelected = (sku: string) => selected.indexOf(sku) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -291,7 +292,7 @@ export default function EnhancedTable({products}: {products: Product[]}) {
   return (
     <Box sx={{ width: '100%'}}>
       <Paper sx={{ width: '100%', mb: 2 }} className='rounded-3xl text-slate-800'>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected={selected.length} selected={selected}/>
         <TableContainer>
           <Table
             sx={{ minWidth: 750, fontFamily: 'Inter, sans-serif' }}
@@ -308,17 +309,17 @@ export default function EnhancedTable({products}: {products: Product[]}) {
             />
             <TableBody>
               {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.name);
+                const isItemSelected = isSelected(row.sku);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.name)}
+                    onClick={(event) => handleClick(event, row.sku)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
-                    key={row.name}
+                    key={row.sku}
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
@@ -340,7 +341,8 @@ export default function EnhancedTable({products}: {products: Product[]}) {
                     >
                       {row.name}
                     </TableCell>
-                    <TableCell align="right" sx={{ fontFamily: 'Inter, sans-serif' }}>{row.price}</TableCell>
+                    <TableCell align="right" sx={{ fontFamily: 'Inter, sans-serif' }}>{row.sku}</TableCell>
+                    <TableCell align="right" sx={{ fontFamily: 'Inter, sans-serif' }}>{formatPrice(row.price)}</TableCell>
                     <TableCell align="right" sx={{ fontFamily: 'Inter, sans-serif' }}>{row.stock}</TableCell>
                     <TableCell align="right" sx={{ fontFamily: 'Inter, sans-serif' }}>{row.hidden}</TableCell>
                     {/* <TableCell align="right">{row.protein}</TableCell> */}
@@ -370,10 +372,6 @@ export default function EnhancedTable({products}: {products: Product[]}) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Filas densas"
-      />
     </Box>
   );
 }

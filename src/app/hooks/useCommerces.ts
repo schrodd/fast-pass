@@ -38,13 +38,12 @@ export function useCommerces() {
   function updateCommerce(
     data: any,
     id: string | undefined
-  ): Promise<boolean> | boolean {
+  ): Promise<boolean> {
     const jwt = localStorage.getItem("auth");
     if (!jwt) {
       push("/admin/login");
-      return false;
     }
-    return fetchHelper("PUT", `/commerces/${id}`, jwt, data)
+    return fetchHelper("PUT", `/commerces/${id}`, jwt || '', data)
       .then((res) => {
         if (!res.ok) throw new Error("HTTP Error: " + res.status);
         return res.json();

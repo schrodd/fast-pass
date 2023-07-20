@@ -14,17 +14,21 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .button-main {
-  @apply bg-gradient-to-tr from-red-500 to-rose-500 text-slate-100 py-2 px-6 rounded-full font-medium shadow-xl transition hover:scale-110;
+  @apply bg-gradient-to-tr from-red-500 to-rose-500 text-slate-100 py-2 px-6 rounded-full font-medium shadow-xl transition hover:scale-105;
 }
 
 .button-alt {
-  @apply bg-gradient-to-tr from-slate-700 to-slate-500 text-slate-100 py-2 px-6 rounded-full font-medium shadow-xl transition hover:scale-110
+  @apply bg-gradient-to-tr from-slate-700 to-slate-500 text-slate-100 py-2 px-6 rounded-full font-medium shadow-xl transition hover:scale-105
 }
 
 .button-white {
-  @apply bg-slate-100 text-slate-900 py-2 px-6 rounded-full font-medium shadow-xl transition hover:scale-110;
+  @apply bg-slate-100 text-slate-900 py-2 px-6 rounded-full font-medium shadow-xl transition hover:scale-105;
 }
 
 .input {
   @apply border border-slate-200 bg-slate-100 text-slate-700 py-2 px-5 rounded-full;
+}
+
+.Toastify__toast {
+  border-radius: 10px !important;
 }
